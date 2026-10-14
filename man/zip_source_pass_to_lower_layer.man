@@ -1,9 +1,9 @@
 .\" Automatically generated from an mdoc input file.  Do not edit.
-.\" zip_source_window.mdoc -- create zip data source overlay
-.\" Copyright (C) 2021 Dieter Baron and Thomas Klausner
+.\" zip_source_pass_to_lower_layer.mdoc -- pass command to lower layer
+.\" Copyright (C) 2022 Dieter Baron and Thomas Klausner
 .\"
 .\" This file is part of libzip, a library to manipulate ZIP archives.
-.\" The authors can be contacted at <libzip@nih.at>
+.\" The authors can be contacted at <info@libzip.org>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
 .\" modification, are permitted provided that the following conditions
@@ -30,67 +30,40 @@
 .\" OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 .\" IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"
-.TH "ZIP_SOURCE_WINDOW" "3" "April 29, 2021" "NiH" "Library Functions Manual"
+.TH "ZIP_SOURCE_PASS_TO_LOWER_LAYER" "3" "December 5, 2022" "NiH" "Library Functions Manual"
 .nh
 .if n .ad l
 .SH "NAME"
-\fBzip_source_window_create\fR
-\- create zip data source overlay
+\fBzip_source_pass_to_lower_layer\fR
+\- pass command to lower layer
 .SH "LIBRARY"
 libzip (-lzip)
 .SH "SYNOPSIS"
 \fB#include <zip.h>\fR
 .sp
-\fIzip_source_t *\fR
+\fIzip_int64_t\fR
 .br
 .PD 0
 .HP 4n
-\fBzip_source_window_create\fR(\fIzip_source_t\ *source\fR, \fIzip_uint64_t\ start\fR, \fIzip_int64_t\ len\fR, \fIzip_error_t\ *error\fR);
+\fBzip_source_pass_to_lower_layer\fR(\fIzip_source_t\ *source\fR, \fIvoid\ *data\fR, \fIzip_uint64_t\ length\fR, \fIzip_source_cmd_t\ command\fR);
 .PD
 .SH "DESCRIPTION"
-The
-\fBzip_source_window_create\fR()
-function create a zip source from an underlying zip source,
-restricting access to a particular window starting at byte
-\fIstart\fR
-and having size
-\fIlen\fR.
-If
-\fIlen\fR
-is \-1, the window spans to the end of the underlying source.
+The functions
+\fBzip_source_pass_to_lower_layer\fR()
+is used in a layered source callback to pass commands for which you don't want to change the result to the lower layer.
+You can use it in the
+\fRdefault\fR
+case of the callback.
 .SH "RETURN VALUES"
-Upon successful completion, the created source is returned.
-Otherwise,
-\fRNULL\fR
-is returned and the error code in
-\fIerror\fR
-is set to indicate the error.
-.SH "ERRORS"
-\fBzip_source_window_create\fR()
-fails if:
-.TP 19n
-[\fRZIP_ER_INVAL\fR]
-\fIsrc\fR
-is
-\fRNULL\fR;
-there is an integer overflow adding
-\fIstart\fR
-and
-\fIlen\fR;
-or
-\fIlen\fR
-is less than \-1.
-.TP 19n
-[\fRZIP_ER_MEMORY\fR]
-Required memory could not be allocated.
+The return value is meant to be returned by the callback.
 .SH "SEE ALSO"
 libzip(3),
-zip_source(3)
-zip_source(3)
+zip_source(5),
+zip_source_layered(3)
 .SH "HISTORY"
-\fBzip_source_window_create\fR()
-was added in libzip 1.8.0.
+\fBzip_source_pass_to_lower_layer\fR()
+was added in libzip 1.10.
 .SH "AUTHORS"
 Dieter Baron <\fIdillo@nih.at\fR>
 and
-Thomas Klausner <\fItk@giga.or.at\fR>
+Thomas Klausner <\fIwiz@gatalith.at\fR>
